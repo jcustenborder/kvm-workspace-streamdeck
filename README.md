@@ -46,7 +46,13 @@ Failed reads clear observed state. Errors appear in the inspector; failed presse
 also show Stream Deck's error indicator. Requests time out after ten seconds and
 commands are never automatically retried. A timeout can leave the command outcome
 unknown: check the resulting session state before pressing again. Commands for
-the same device run serially. Multi Actions are not supported in this version.
+the same device run serially.
+
+All four actions can be used in Stream Deck Multi Actions. To start a session and
+then send a shortcut, add **Session — Start or Focus → Delay → Send Keys**, with
+both KVM actions targeting the same device. Adjust Stream Deck's built-in Delay
+to allow the remote connection to become ready; the plugin does not wait for
+readiness or retry a failed key combination automatically.
 
 ## Build and install
 
@@ -86,6 +92,9 @@ never contact a live KVM. For a manual smoke test after installation:
   closed/unavailable, and after an API failure.
 - Send an intentional test combination to a ready session. Check invalid
   combinations and failed commands show errors without automatic replay.
+- Create a Multi Action with Session, Delay, and Send Keys targeting the same
+  device. Verify settings persist for each step and the shortcut is sent after
+  the delay, with the session initially closed and already open.
 - Navigate away from all KVM buttons and verify polling stops; return and verify
   feedback refreshes. Test API unavailability and token replacement.
 
