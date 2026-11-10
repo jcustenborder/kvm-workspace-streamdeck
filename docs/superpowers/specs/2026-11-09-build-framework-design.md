@@ -7,11 +7,11 @@ GitHub Actions workflow, with versioning matching `jcustenborder/kvm-workspace`.
 
 - Use Node.js 24, the official `@elgato/streamdeck` SDK, strict TypeScript,
   and a bundled entry point. Pin dependencies and commit the npm lockfile.
-- Use UUID `com.jcustenborder.kvm-workspace`, macOS 13+, and Stream Deck 7.1+.
+- Use UUID `com.github.jcustenborder.kvm-workspace-streamdeck`, macOS 13+, and Stream Deck 7.1+.
   KVM Workspace currently targets macOS, so advertise only that platform.
 - Include one clearly labeled placeholder keypad action. It has no KVM API,
   credentials, settings UI, or hardware-control behavior.
-- Build into `dist/com.jcustenborder.kvm-workspace.sdPlugin`; use Elgato's CLI
+- Build into `dist/com.github.jcustenborder.kvm-workspace-streamdeck.sdPlugin`; use Elgato's CLI
   for validation and `.streamDeckPlugin` packaging. Include required icon sizes.
 - Keep release tags as `vX.Y.Z` and encode manifest versions as `X.Y.Z.0`.
   Invalid/unsupported version components fail explicitly.

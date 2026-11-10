@@ -2,7 +2,7 @@
   "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Actions": [
     {
-      "UUID": "com.jcustenborder.kvm-workspace.placeholder",
+      "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.placeholder",
       "Name": "Placeholder",
       "Tooltip": "Build-framework placeholder; KVM controls are not implemented yet.",
       "Icon": "imgs/action",
@@ -20,7 +20,7 @@
   "CodePath": "bin/plugin.cjs",
   "Nodejs": { "Version": "24" },
   "OS": [{ "Platform": "mac", "MinimumVersion": "13" }],
-  "UUID": "com.jcustenborder.kvm-workspace",
+  "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck",
   "Version": "0.1.0.0",
   "SDKVersion": 3,
   "Software": { "MinimumVersion": "7.1" },

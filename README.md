@@ -21,7 +21,7 @@ npm run validate
 npm run package
 ```
 
-Open `dist/com.jcustenborder.kvm-workspace.streamDeckPlugin` to install it in
+Open `dist/com.github.jcustenborder.kvm-workspace-streamdeck.streamDeckPlugin` to install it in
 Stream Deck. Add **KVM Workspace → Placeholder** to a key; it displays
 “Skeleton” and does not perform KVM operations.
 

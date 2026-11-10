@@ -14,7 +14,7 @@ GitHub Actions and GitHub Releases.
 ## Global constraints
 
 - Start at `0.1.0`; release tags `vX.Y.Z`; manifest versions `X.Y.Z.0`.
-- macOS 13+, Stream Deck 7.1+, UUID `com.jcustenborder.kvm-workspace`.
+- macOS 13+, Stream Deck 7.1+, UUID `com.github.jcustenborder.kvm-workspace-streamdeck`.
 - PR base `initial`; only main pushes publish. No live KVM control yet.
 - Pin dependencies, commit the lockfile, fail on invalid versions/build errors.
 

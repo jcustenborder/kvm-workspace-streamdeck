@@ -1,6 +1,6 @@
 import streamDeck, { action, SingletonAction } from '@elgato/streamdeck';
 
-@action({ UUID: 'com.jcustenborder.kvm-workspace.placeholder' })
+@action({ UUID: 'com.github.jcustenborder.kvm-workspace-streamdeck.placeholder' })
 class Placeholder extends SingletonAction {}
 
 streamDeck.actions.registerAction(new Placeholder());
