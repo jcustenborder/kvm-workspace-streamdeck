@@ -33,11 +33,12 @@ containing the token. Tokens and API response bodies are not logged by the plugi
 | **Session — Start or Focus** | Select an explicit **LAN** or **Tailnet** start route. If closed, start on that route. **Focus window** (enabled by default) focuses after a successful start or focuses an already-open window. An open session is never restarted or switched to another route. With focus unchecked, an already-open session is left alone. |
 | **End Session** | Release input and close the selected session. Already closed succeeds. |
 | **Speaker** | Toggle once. Distinct speaker icons and titles show observed **On**, **Off**, or **?** (unknown/unavailable) state. |
-| **Send Keys** | Send 1–16 unique supported API key codes in press order, separated by `+`, such as `ControlLeft+AltLeft+Delete` or `MetaLeft+KeyL`. The inspector lists supported codes. `MetaLeft` is the Windows key; keys release in reverse order. |
+| **Send Keys** | Send 1–16 unique supported API key codes in press order, separated by `+`, such as `ControlLeft+AltLeft+Delete` or `MetaLeft+KeyL`. **Focus window** (off by default) focuses the selected session before sending; a focus failure prevents sending keys. The inspector lists supported codes. `MetaLeft` is the Windows key; keys release in reverse order. |
 
-Speaker and Send Keys require an already-open, ready session; they do not start
-or focus it. Starting may still require certificate approval or manual login in
-the desktop application. **Open** means a session window exists, not proof of
+Speaker and Send Keys require an already-open, ready session; neither starts it.
+Send Keys focuses it only when **Focus window** is checked. Starting may still
+require certificate approval or manual login in the desktop application.
+**Open** means a session window exists, not proof of
 authenticated firmware connectivity. Unknown speaker state is never treated as Off.
 
 Visible buttons share a non-overlapping two-second status poll. Status refreshes
@@ -92,6 +93,8 @@ never contact a live KVM. For a manual smoke test after installation:
   closed/unavailable, and after an API failure.
 - Send an intentional test combination to a ready session. Check invalid
   combinations and failed commands show errors without automatic replay.
+- Check Send Keys with Focus window enabled and disabled. Confirm a focus failure
+  prevents the combination from being sent and the choice persists on reopening.
 - Create a Multi Action with Session, Delay, and Send Keys targeting the same
   device. Verify settings persist for each step and the shortcut is sent after
   the delay, with the session initially closed and already open.

@@ -49,6 +49,7 @@ test('inspector separates shared credentials from button settings and persists f
   assert.equal(socket.sent[0].event, 'registerPropertyInspector');
   assert.equal(elements.get('focus').checked, true);
   assert.equal(elements.get('session-options').hidden, false);
+  assert.equal(elements.get('focus-options').hidden, false);
   assert.equal(elements.get('keys-options').hidden, true);
   receive('didReceiveGlobalSettings', { settings: { address: 'http://localhost:1234', token: 'test-secret' } });
   assert.equal(elements.get('token').value, 'test-secret');
@@ -102,6 +103,7 @@ test('inspector retains unavailable selection and renders status/errors as text'
   assert.match(elements.get('status-error').textContent, /missing/);
   assert.equal(elements.get('session-options').hidden, true);
   assert.equal(elements.get('keys-options').hidden, true);
+  assert.equal(elements.get('focus-options').hidden, true);
   assert.match(elements.get('action-help').textContent, /toggle/i);
   receive('didReceiveSettings', { settings: { device: 'demo-device' } });
   assert.match(elements.get('session-status').textContent, /Open.*LAN.*Unknown/i);
@@ -110,11 +112,24 @@ test('inspector retains unavailable selection and renders status/errors as text'
   assert.match(elements.get('status-error').textContent, /API unavailable/);
 });
 
-test('Send Keys inspector saves an ordered combination without unrelated controls', () => {
-  const { elements, socket } = inspector('keys', { device: 'demo-device' });
+test('Send Keys inspector saves its combination and opt-in focus setting', () => {
+  const { elements, socket, receive } = inspector('keys', { device: 'demo-device' });
   assert.equal(elements.get('keys-options').hidden, false);
   assert.equal(elements.get('session-options').hidden, true);
+  assert.equal(elements.get('focus-options').hidden, false);
+  assert.equal(elements.get('focus').checked, false);
   elements.get('keys').value = 'MetaLeft+KeyL';
   elements.get('keys').emit('change');
   assert.deepEqual(socket.sent.at(-1).payload, { device: 'demo-device', keys: 'MetaLeft+KeyL' });
+  elements.get('focus').checked = true;
+  elements.get('focus').emit('change');
+  const saved = socket.sent.at(-1);
+  assert.deepEqual(saved, {
+    event: 'setSettings', context: 'inspector-id',
+    action: 'com.github.jcustenborder.kvm-workspace-streamdeck.keys',
+    payload: { device: 'demo-device', keys: 'MetaLeft+KeyL', focus: true },
+  });
+  assert.equal(inspector('keys', saved.payload).elements.get('focus').checked, true);
+  receive('didReceiveSettings', { settings: { device: 'demo-device', focus: false } });
+  assert.equal(elements.get('focus').checked, false);
 });
