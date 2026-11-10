@@ -55,7 +55,7 @@ Files: `scripts/release-version.cjs`, `tests/release-version.test.cjs`,
   for publication. Inspect tag targets and publish draft-first with GitHub CLI.
 - [x] Document local commands, installation, runtime floors, placeholder behavior,
   branch/release policy, and retry/version behavior.
-- [ ] Run the full local pipeline, inspect the package contents and version,
+- [x] Run the full local pipeline, inspect the package contents and version,
   review the diff, commit only intended files, push, and open a PR to `initial`.
-- [ ] Inspect GitHub Actions results, fix any failures, and report the PR URL
+- [x] Inspect GitHub Actions results, fix any failures, and report the PR URL
   with the observed checks. Do not create the `initial` → `main` PR yet.
