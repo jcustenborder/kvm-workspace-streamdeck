@@ -47,6 +47,9 @@ Artifacts are retained for seven days.
 Only a successful **push to `main`** publishes a GitHub Release. The publishing
 job downloads the exact verified installer instead of rebuilding. It uses the
 repository's `GITHUB_TOKEN` with `contents: write`; no extra secrets are required.
+Main-only version planning also needs `contents: write` because GitHub only
+lists reserved draft releases for callers with push access. Verification keeps
+read-only permissions, including on PRs.
 
 ## Versions and releases
 

@@ -24,18 +24,18 @@ Files: `package.json`, `package-lock.json`, `tsconfig.json`, `src/plugin.ts`,
 `plugin/manifest.json`, `plugin/imgs/*`, `scripts/build.mjs`,
 `scripts/plugin-version.cjs`, `tests/plugin-version.test.cjs`, `.gitignore`.
 
-- [ ] Add a Node test for `pluginVersion(version: string): string` converting
+- [x] Add a Node test for `pluginVersion(version: string): string` converting
   `0.1.0` to `0.1.0.0` and rejecting prereleases, leading zeros, negative values,
   nonstrings, and components above 65535. Run it before implementation.
-- [ ] Implement that conversion, then stage a clean plugin directory and bundle
+- [x] Implement that conversion, then stage a clean plugin directory and bundle
   the entry point with `target: 'node24'`, `platform: 'node'`, `format: 'cjs'`.
   Read `RELEASE_VERSION` when supplied, otherwise the package version.
-- [ ] Register one empty `SingletonAction` with the matching manifest UUID;
+- [x] Register one empty `SingletonAction` with the matching manifest UUID;
   give it the visible name `Placeholder` and tooltip explaining its scope.
-- [ ] Add required icons and strict TypeScript settings. Use official CLI
+- [x] Add required icons and strict TypeScript settings. Use official CLI
   `streamdeck validate ... --no-update-check` and
   `streamdeck pack ... --output dist --force --no-update-check`.
-- [ ] Run `npm ci`, `npm run check`, `npm test`, `npm run build`,
+- [x] Run `npm ci`, `npm run check`, `npm test`, `npm run build`,
   `npm run validate`, and `npm run package`.
 
 ## Task 2: Release selection and CI
@@ -43,17 +43,17 @@ Files: `package.json`, `package-lock.json`, `tsconfig.json`, `src/plugin.ts`,
 Files: `scripts/release-version.cjs`, `tests/release-version.test.cjs`,
 `.github/workflows/build.yml`, `README.md`.
 
-- [ ] Test `planRelease(baseVersion: string, releases: Release[], commit: string)`
+- [x] Test `planRelease(baseVersion: string, releases: Release[], commit: string)`
   for no releases, unordered patch/minor/major versions, irrelevant tags,
   same-commit published/draft releases, invalid base versions/missing commits.
   Return `{version, tag, exists, published}` as in the existing KVM project.
-- [ ] Copy the existing KVM selector, with validation via the four-part version
+- [x] Copy the existing KVM selector, with validation via the four-part version
   converter so unsupported plugin versions fail before packaging.
-- [ ] Add one workflow with a verification job and a main-only publishing job.
-  Select versions before building on main; pass the plan through job outputs.
+- [x] Add one workflow with verification and main-only planning/publishing jobs.
+  Select versions with draft visibility before building on main; pass job outputs.
   Upload the verified `.streamDeckPlugin`, then download that same artifact
   for publication. Inspect tag targets and publish draft-first with GitHub CLI.
-- [ ] Document local commands, installation, runtime floors, placeholder behavior,
+- [x] Document local commands, installation, runtime floors, placeholder behavior,
   branch/release policy, and retry/version behavior.
 - [ ] Run the full local pipeline, inspect the package contents and version,
   review the diff, commit only intended files, push, and open a PR to `initial`.

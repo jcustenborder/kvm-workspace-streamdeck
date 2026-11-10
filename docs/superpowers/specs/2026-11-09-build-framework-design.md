@@ -26,7 +26,8 @@ GitHub Actions workflow, with versioning matching `jcustenborder/kvm-workspace`.
 - Reuse the KVM project's next-patch release selector, starting at `0.1.0`,
   including same-commit reruns and draft recovery. Read all release pages.
 - Serialize main builds, avoid cancelling a running publication, and scope write
-  permissions to the publishing job. Publish the already verified installer.
+  permissions to main-only planning/publishing jobs (draft visibility requires
+  push access). Publish the already verified installer.
 - Create a draft with assets before marking it published; reject conflicting tags.
   Propagate all verification and publication errors.
 

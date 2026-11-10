@@ -17,9 +17,13 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  verify:
+  prepare:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
+    # GitHub requires push access to include reserved draft releases in the list.
+    permissions:
+      contents: write
     outputs:
       version: ${{ steps.version.outputs.version }}
       tag: ${{ steps.version.outputs.tag }}
@@ -31,24 +35,36 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: npm
-      - run: npm ci
-      - run: npm run check
-      - run: npm test
-      - name: Select package version or next main release
+      - name: Select next main release, including reserved drafts
         id: version
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [[ "$GITHUB_EVENT_NAME" = push && "$GITHUB_REF" = refs/heads/main ]]; then
-            gh api "repos/$GITHUB_REPOSITORY/releases" --paginate --slurp > "$RUNNER_TEMP/releases.json"
-            node scripts/release-version.cjs "$RUNNER_TEMP/releases.json"
-          else
-            node -e 'console.log("version=" + require("./package.json").version)' >> "$GITHUB_OUTPUT"
-          fi
-      - run: npm run build
+          gh api "repos/$GITHUB_REPOSITORY/releases" --paginate --slurp > "$RUNNER_TEMP/releases.json"
+          node scripts/release-version.cjs "$RUNNER_TEMP/releases.json"
+
+  verify:
+    needs: prepare
+    if: always() && !cancelled() && (needs.prepare.result == 'success' || needs.prepare.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - name: Build plugin
         env:
-          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+          RELEASE_VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          if [[ -z "$RELEASE_VERSION" ]]; then unset RELEASE_VERSION; fi
+          npm run build
       - run: npm run validate
       - run: npm run package
       - uses: actions/upload-artifact@v4
@@ -59,15 +75,15 @@ jobs:
           retention-days: 7
 
   publish:
-    needs: verify
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.verify.outputs.published != 'true'
+    needs: [prepare, verify]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.prepare.outputs.published != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: write
     env:
-      RELEASE_VERSION: ${{ needs.verify.outputs.version }}
-      RELEASE_TAG: ${{ needs.verify.outputs.tag }}
+      RELEASE_VERSION: ${{ needs.prepare.outputs.version }}
+      RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
