@@ -71,13 +71,16 @@ test('device selection uses valid settings commands and survives reopening every
     const { elements, socket } = inspector(kind);
     const action = `com.github.jcustenborder.kvm-workspace-streamdeck.${kind}`;
     assert.deepEqual(socket.sent.find(message => message.event === 'getSettings'), {
-      event: 'getSettings', context: 'button-id', action,
+      event: 'getSettings', context: 'inspector-id', action,
+    });
+    assert.deepEqual(socket.sent.find(message => message.event === 'sendToPlugin'), {
+      event: 'sendToPlugin', context: 'inspector-id', action, payload: { event: 'refresh' },
     });
     elements.get('device').value = 'demo-device';
     elements.get('device').emit('change');
     const saved = socket.sent.findLast(message => message.event === 'setSettings');
     assert.deepEqual(saved, {
-      event: 'setSettings', context: 'button-id', action, payload: { device: 'demo-device' },
+      event: 'setSettings', context: 'inspector-id', action, payload: { device: 'demo-device' },
     });
     socket.onclose();
     const reopened = inspector(kind, saved.payload);

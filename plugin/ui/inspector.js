@@ -4,14 +4,13 @@
   const element = id => document.getElementById(id);
   let socket;
   let uuid;
-  let actionContext;
   let actionId;
   let kind;
   let settings = {};
   let globalSettings = {};
   let sessions = [];
 
-  function send(event, payload, context = actionContext) {
+  function send(event, payload, context = uuid) {
     if (socket?.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({ event, context, ...(payload === undefined ? {} : { payload }),
         ...(['getSettings', 'setSettings', 'sendToPlugin'].includes(event) ? { action: actionId } : {}) }));
@@ -56,7 +55,6 @@
   window.connectElgatoStreamDeckSocket = (port, pluginUUID, registerEvent, _info, actionInfo) => {
     uuid = pluginUUID;
     const action = JSON.parse(actionInfo);
-    actionContext = action.context;
     actionId = action.action;
     kind = actionId.split('.').at(-1);
     settings = action.payload.settings || {};
