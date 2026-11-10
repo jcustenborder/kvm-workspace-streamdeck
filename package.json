@@ -1,0 +1,26 @@
+{
+  "name": "kvm-workspace-streamdeck",
+  "version": "0.1.0",
+  "description": "Stream Deck plugin for KVM Workspace",
+  "private": true,
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "node --test tests/*.test.cjs",
+    "build": "node scripts/build.mjs",
+    "validate": "streamdeck validate dist/com.github.jcustenborder.kvm-workspace-streamdeck.sdPlugin --no-update-check",
+    "package": "streamdeck pack dist/com.github.jcustenborder.kvm-workspace-streamdeck.sdPlugin --output dist --force --no-update-check"
+  },
+  "dependencies": {
+    "@elgato/streamdeck": "3.0.4"
+  },
+  "devDependencies": {
+    "@elgato/cli": "1.10.4",
+    "@types/node": "24.19.2",
+    "esbuild": "0.28.2",
+    "typescript": "5.9.3"
+  }
+}
