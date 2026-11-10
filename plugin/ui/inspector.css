@@ -1,0 +1,16 @@
+:root { color-scheme: dark; font: 12px system-ui, sans-serif; color: #ddd; background: #2d2d2d; }
+body { margin: 12px; }
+h1 { font-size: 15px; margin: 0 0 12px; }
+fieldset { border: 1px solid #666; border-radius: 4px; margin: 0 0 14px; padding: 10px; }
+legend { font-weight: 600; padding: 0 4px; }
+label { display: block; margin: 7px 0 4px; }
+input:not([type="checkbox"]), select { box-sizing: border-box; width: 100%; padding: 6px; border: 1px solid #777; border-radius: 3px; background: #3d3d3d; color: #fff; }
+.checkbox { display: flex; align-items: center; gap: 6px; margin-top: 12px; }
+button { padding: 6px 10px; border: 1px solid #888; border-radius: 3px; background: #484848; color: #fff; cursor: pointer; }
+button:disabled { opacity: .5; cursor: default; }
+:focus-visible { outline: 2px solid #8bc6ff; outline-offset: 2px; }
+p { line-height: 1.5; overflow-wrap: anywhere; }
+details { margin: 10px 0; }
+.error { color: #ffb4b4; white-space: pre-wrap; }
+.error:empty { display: none; }
+[hidden] { display: none !important; }
