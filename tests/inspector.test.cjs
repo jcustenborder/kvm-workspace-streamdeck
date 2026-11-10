@@ -66,6 +66,25 @@ test('inspector separates shared credentials from button settings and persists f
   assert.deepEqual(socket.sent.at(-1).payload, { event: 'refresh' });
 });
 
+test('device selection uses valid settings commands and survives reopening every action inspector', () => {
+  for (const kind of ['session', 'end', 'speaker', 'keys']) {
+    const { elements, socket } = inspector(kind);
+    const action = `com.github.jcustenborder.kvm-workspace-streamdeck.${kind}`;
+    assert.deepEqual(socket.sent.find(message => message.event === 'getSettings'), {
+      event: 'getSettings', context: 'button-id', action,
+    });
+    elements.get('device').value = 'demo-device';
+    elements.get('device').emit('change');
+    const saved = socket.sent.findLast(message => message.event === 'setSettings');
+    assert.deepEqual(saved, {
+      event: 'setSettings', context: 'button-id', action, payload: { device: 'demo-device' },
+    });
+    socket.onclose();
+    const reopened = inspector(kind, saved.payload);
+    assert.equal(reopened.elements.get('device').value, 'demo-device');
+  }
+});
+
 test('inspector retains unavailable selection and renders status/errors as text', () => {
   const { elements, receive } = inspector('speaker', { device: 'missing-device' });
   receive('sendToPropertyInspector', {

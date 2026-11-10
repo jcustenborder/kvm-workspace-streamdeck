@@ -14,7 +14,7 @@
   function send(event, payload, context = actionContext) {
     if (socket?.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({ event, context, ...(payload === undefined ? {} : { payload }),
-        ...(event === 'sendToPlugin' ? { action: actionId } : {}) }));
+        ...(['getSettings', 'setSettings', 'sendToPlugin'].includes(event) ? { action: actionId } : {}) }));
     }
   }
 
