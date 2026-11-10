@@ -4,17 +4,16 @@
   const element = id => document.getElementById(id);
   let socket;
   let uuid;
-  let actionContext;
   let actionId;
   let kind;
   let settings = {};
   let globalSettings = {};
   let sessions = [];
 
-  function send(event, payload, context = actionContext) {
+  function send(event, payload, context = uuid) {
     if (socket?.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({ event, context, ...(payload === undefined ? {} : { payload }),
-        ...(event === 'sendToPlugin' ? { action: actionId } : {}) }));
+        ...(['getSettings', 'setSettings', 'sendToPlugin'].includes(event) ? { action: actionId } : {}) }));
     }
   }
 
@@ -41,14 +40,15 @@
   function renderSettings() {
     element('session-options').hidden = kind !== 'session';
     element('keys-options').hidden = kind !== 'keys';
+    element('focus-options').hidden = kind !== 'session' && kind !== 'keys';
     element('route').value = settings.route || '';
-    element('focus').checked = settings.focus !== false;
+    element('focus').checked = kind === 'session' ? settings.focus !== false : settings.focus === true;
     element('keys').value = settings.keys || '';
     element('action-help').textContent = {
       session: 'Start when closed. When Focus window is checked, focus after starting or focus the existing window. An open session is otherwise left alone.',
       end: 'Release input and close the selected session. Already closed is safe.',
       speaker: 'Toggle the speaker once. The button icon shows observed On, Off or Unknown state. Failed toggles are not retried.',
-      keys: 'Send this combination once. The session must already be open and ready. Failed combinations are not retried.',
+      keys: 'Send this combination once. When Focus window is checked, focus before sending keys; a focus failure prevents sending. The session must already be open and ready. Failed combinations are not retried.',
     }[kind] || '';
     renderDevices();
   }
@@ -56,7 +56,6 @@
   window.connectElgatoStreamDeckSocket = (port, pluginUUID, registerEvent, _info, actionInfo) => {
     uuid = pluginUUID;
     const action = JSON.parse(actionInfo);
-    actionContext = action.context;
     actionId = action.action;
     kind = actionId.split('.').at(-1);
     settings = action.payload.settings || {};

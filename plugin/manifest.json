@@ -9,7 +9,7 @@
       "Controllers": ["Keypad"],
       "States": [{ "Image": "imgs/session", "Title": "Session", "TitleAlignment": "bottom", "FontSize": 10 }],
       "PropertyInspectorPath": "ui/inspector.html",
-      "SupportedInMultiActions": false
+      "SupportedInMultiActions": true
     },
     {
       "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.end",
@@ -19,7 +19,7 @@
       "Controllers": ["Keypad"],
       "States": [{ "Image": "imgs/end", "Title": "End Session", "TitleAlignment": "bottom", "FontSize": 10 }],
       "PropertyInspectorPath": "ui/inspector.html",
-      "SupportedInMultiActions": false
+      "SupportedInMultiActions": true
     },
     {
       "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.speaker",
@@ -29,7 +29,7 @@
       "Controllers": ["Keypad"],
       "States": [{ "Image": "imgs/speaker-unknown", "Title": "Speaker", "TitleAlignment": "bottom", "FontSize": 10 }],
       "PropertyInspectorPath": "ui/inspector.html",
-      "SupportedInMultiActions": false
+      "SupportedInMultiActions": true
     },
     {
       "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.keys",
@@ -39,7 +39,7 @@
       "Controllers": ["Keypad"],
       "States": [{ "Image": "imgs/keys", "Title": "Send Keys", "TitleAlignment": "bottom", "FontSize": 10 }],
       "PropertyInspectorPath": "ui/inspector.html",
-      "SupportedInMultiActions": false
+      "SupportedInMultiActions": true
     }
   ],
   "Author": "Jeremy Custenborder",
