@@ -2,18 +2,49 @@
   "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Actions": [
     {
-      "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.placeholder",
-      "Name": "Placeholder",
-      "Tooltip": "Build-framework placeholder; KVM controls are not implemented yet.",
+      "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.session",
+      "Name": "Session — Start or Focus",
+      "Tooltip": "Start a closed session on the selected route; optionally focus its window. Open sessions keep their route.",
       "Icon": "imgs/action",
       "Controllers": ["Keypad"],
-      "States": [{ "Image": "imgs/key", "Title": "Skeleton" }],
+      "States": [{ "Image": "imgs/session", "Title": "Session", "TitleAlignment": "bottom", "FontSize": 10 }],
+      "PropertyInspectorPath": "ui/inspector.html",
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.end",
+      "Name": "End Session",
+      "Tooltip": "Release input and close the selected session.",
+      "Icon": "imgs/action",
+      "Controllers": ["Keypad"],
+      "States": [{ "Image": "imgs/end", "Title": "End Session", "TitleAlignment": "bottom", "FontSize": 10 }],
+      "PropertyInspectorPath": "ui/inspector.html",
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.speaker",
+      "Name": "Speaker",
+      "Tooltip": "Toggle the speaker. The icon shows observed On, Off or Unknown state.",
+      "Icon": "imgs/action",
+      "Controllers": ["Keypad"],
+      "States": [{ "Image": "imgs/speaker-unknown", "Title": "Speaker", "TitleAlignment": "bottom", "FontSize": 10 }],
+      "PropertyInspectorPath": "ui/inspector.html",
+      "SupportedInMultiActions": false
+    },
+    {
+      "UUID": "com.github.jcustenborder.kvm-workspace-streamdeck.keys",
+      "Name": "Send Keys",
+      "Tooltip": "Send a configured key combination to the selected session.",
+      "Icon": "imgs/action",
+      "Controllers": ["Keypad"],
+      "States": [{ "Image": "imgs/keys", "Title": "Send Keys", "TitleAlignment": "bottom", "FontSize": 10 }],
+      "PropertyInspectorPath": "ui/inspector.html",
       "SupportedInMultiActions": false
     }
   ],
   "Author": "Jeremy Custenborder",
   "Name": "KVM Workspace",
-  "Description": "Plugin skeleton for the KVM Workspace Stream Deck integration.",
+  "Description": "Start, focus and end KVM Workspace sessions, toggle speakers and send key combinations.",
   "Category": "KVM Workspace",
   "CategoryIcon": "imgs/category",
   "Icon": "imgs/plugin",

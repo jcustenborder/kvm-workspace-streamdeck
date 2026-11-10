@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src ws://127.0.0.1:*">
+  <title>KVM Workspace</title>
+  <link rel="stylesheet" href="inspector.css">
+  <script src="inspector.js" defer></script>
+</head>
+<body>
+  <h1>KVM Workspace</h1>
+  <form id="connection-form">
+    <fieldset>
+      <legend>Shared API connection</legend>
+      <label for="address">API address</label>
+      <input id="address" type="url" placeholder="http://127.0.0.1:53241" required spellcheck="false">
+      <label for="token">Bearer token</label>
+      <input id="token" type="password" autocomplete="off" required spellcheck="false" aria-describedby="token-help">
+      <p id="token-help">Copy the token from the KVM Workspace menu. These settings apply to every KVM button. Stream Deck settings are not an encrypted credential vault.</p>
+      <button id="save-connection" type="submit" disabled>Save connection</button>
+    </fieldset>
+  </form>
+  <fieldset>
+    <legend>This button</legend>
+    <label for="device">Device</label>
+    <select id="device"><option value="">Select a device</option></select>
+    <div id="session-options" hidden>
+      <label for="route">Start route</label>
+      <select id="route">
+        <option value="">Select a route</option>
+        <option value="lan">LAN</option>
+        <option value="tailnet">Tailnet</option>
+      </select>
+      <label class="checkbox"><input id="focus" type="checkbox" checked> Focus window</label>
+      <p>The route applies only when starting a closed session. Open sessions keep their current route.</p>
+    </div>
+    <div id="keys-options" hidden>
+      <label for="keys">Key combination</label>
+      <input id="keys" type="text" placeholder="ControlLeft+AltLeft+Delete" spellcheck="false" aria-describedby="key-help">
+      <p id="key-help">Use 1–16 unique API key codes separated by +, in press order. MetaLeft is the Windows key. Keys release in reverse order.</p>
+      <details><summary>Supported key codes</summary><p id="key-codes"></p></details>
+    </div>
+    <p id="action-help"></p>
+  </fieldset>
+  <section aria-label="API status" aria-live="polite">
+    <p id="session-status">State unknown</p>
+    <p id="status-error" class="error" role="status"></p>
+    <p id="command-error" class="error" role="status"></p>
+    <button id="refresh" type="button">Refresh devices and status</button>
+    <p>Open means a window exists, not that firmware is connected or authenticated. Status refreshes every two seconds while buttons are visible.</p>
+  </section>
+</body>
+</html>
