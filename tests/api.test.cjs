@@ -53,6 +53,29 @@ test('End, speaker toggle and key combinations use the dedicated API commands', 
   assert.deepEqual(JSON.parse(calls[2].body), { keys: ['ControlLeft', 'AltLeft', 'Delete'] });
 });
 
+test('Send Keys focuses before sending only when explicitly enabled', async () => {
+  for (const [focus, paths] of [
+    [undefined, ['/sessions/demo-device/send-keys']],
+    [false, ['/sessions/demo-device/send-keys']],
+    [true, ['/sessions/demo-device/focus', '/sessions/demo-device/send-keys']],
+  ]) {
+    const { api, calls } = harness([json(session('open', 'lan')), json(session('open', 'lan'))]);
+    await api.execute('keys', { device: 'demo-device', keys: 'MetaLeft+KeyL', focus });
+    assert.deepEqual(calls.map(call => call.path), paths);
+    assert.ok(calls.every(call => call.method === 'POST'));
+    assert.deepEqual(JSON.parse(calls.at(-1).body), { keys: ['MetaLeft', 'KeyL'] });
+    if (focus) assert.equal(calls[0].body, undefined);
+  }
+});
+
+test('Send Keys does not send keys after a failed or invalid focus response', async () => {
+  for (const response of [json({ error: 'Session closed' }, 409), json({})]) {
+    const { api, calls } = harness([response]);
+    await assert.rejects(api.execute('keys', { device: 'demo-device', keys: 'KeyA', focus: true }), /409|Invalid session/);
+    assert.deepEqual(calls.map(call => call.path), ['/sessions/demo-device/focus']);
+  }
+});
+
 test('session defaults focus to enabled and does not focus after failed start', async () => {
   const { api, calls } = harness([json(session()), json({ error: 'Route conflict' }, 409)]);
   await assert.rejects(api.execute('session', { device: 'demo-device', route: 'tailnet' }), /409.*Route conflict/);
@@ -85,6 +108,8 @@ test('invalid settings and combinations fail before any network traffic', async 
   }
   await assert.rejects(api.execute('session', { device: 'demo-device' }), /route/i);
   await assert.rejects(api.execute('keys', { device: 'demo-device', keys: 'Ctrl+A' }), /key/i);
+  await assert.rejects(api.execute('keys', { device: 'demo-device', keys: 'Ctrl+A', focus: true }), /key/i);
+  await assert.rejects(api.execute('keys', { device: 'demo-device', keys: 'KeyA', focus: 'true' }), /focus/i);
   assert.equal(calls.length, 0);
   for (const address of ['https://example.com', 'http://127.0.0.1.evil.test',
     'http://user:pass@localhost:123', 'http://localhost:123/path', 'http://[::1]:123/?secret=x']) {

@@ -108,6 +108,8 @@ export class KvmApi {
       sessionResponse(await this.request(`${path}/end`, 'POST'), settings.device);
     } else if (kind === 'keys') {
       const keys = parseKeys(settings.keys);
+      if (settings.focus !== undefined && typeof settings.focus !== 'boolean') throw new Error('Invalid Focus window setting.');
+      if (settings.focus === true) sessionResponse(await this.request(`${path}/focus`, 'POST'), settings.device);
       sessionResponse(await this.request(`${path}/send-keys`, 'POST', { keys }), settings.device);
     } else {
       throw new Error('Unknown action.');
